@@ -1,0 +1,125 @@
+@import "tailwindcss";
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap');
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-neo-bg: #0a0e17; /* Dark background */
+  --color-neo-bg-light: #e5e5e5; /* Light background */
+  --color-neo-green: #8CC84B;
+  --color-neo-green-light: #b5e683;
+  --color-neo-yellow: #ffde59;
+  --color-neo-pink: #ffa6f6;
+  --color-neo-blue: #80ece0;
+  --color-dark: #1a1a1a;
+  
+  --font-heading: "Neue Montreal", "Satoshi", "Helvetica Neue", sans-serif; /* Elegant Heading Font */
+  --font-body: "IBM Plex Mono", monospace; /* Technical Body Font */
+}
+
+@layer base {
+  body {
+    @apply bg-neo-bg-light text-dark font-body antialiased overflow-x-hidden transition-colors duration-300;
+  }
+  .dark body {
+    @apply bg-neo-bg text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-bold;
+  }
+}
+
+/* Wireframe Neo Brutalism Custom Utilities */
+.wire-border {
+  @apply border-2 border-dark dark:border-white transition-colors duration-300;
+}
+
+.wire-border-green {
+  @apply border-2 border-neo-green transition-colors duration-300;
+}
+
+.wire-shadow-green {
+  box-shadow: 8px 8px 0px 0px #8CC84B;
+  transition: all 0.2s ease;
+}
+
+.wire-shadow-green:hover {
+  box-shadow: 4px 4px 0px 0px #8CC84B;
+  transform: translate(4px, 4px);
+}
+
+.wire-shadow-white {
+  box-shadow: 8px 8px 0px 0px #1a1a1a;
+  transition: all 0.2s ease;
+}
+
+.dark .wire-shadow-white {
+  box-shadow: 8px 8px 0px 0px #ffffff;
+}
+
+.wire-shadow-white:hover {
+  box-shadow: 4px 4px 0px 0px #1a1a1a;
+  transform: translate(4px, 4px);
+}
+
+.dark .wire-shadow-white:hover {
+  box-shadow: 4px 4px 0px 0px #ffffff;
+}
+
+.wire-card {
+  @apply border-2 border-dark dark:border-white bg-transparent p-6 relative transition-colors duration-300;
+  box-shadow: 8px 8px 0px 0px #8CC84B;
+}
+
+.wire-card:hover {
+  box-shadow: 4px 4px 0px 0px #8CC84B;
+  transform: translate(4px, 4px);
+}
+
+.decor-dots {
+  background-image: radial-gradient(rgba(0,0,0,0.1) 2px, transparent 2px);
+  background-size: 30px 30px;
+}
+
+.dark .decor-dots {
+  background-image: radial-gradient(rgba(255,255,255,0.05) 2px, transparent 2px);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8CC84B;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b5e683;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #8CC84B transparent;
+}
+
+/* Section Gradient Dividers */
+section + section {
+  border-top: 1px solid transparent;
+  background-image: linear-gradient(to right, transparent, rgba(140, 200, 75, 0.2), transparent);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: top center;
+}
