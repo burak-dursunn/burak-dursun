@@ -75,7 +75,6 @@ const ParticleBackground = () => {
 
   return (
     <div 
-      key={isDarkMode ? 'dark' : 'light'}
       id="tsparticles" 
       className="fixed inset-0 z-0 pointer-events-none transition-colors duration-500" 
       style={{ width: '100vw', height: '100vh' }}
