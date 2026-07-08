@@ -2,7 +2,7 @@ import { motion, useInView } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { useRef } from 'react';
 import { GiSoccerBall } from 'react-icons/gi';
-import { FaGamepad, FaPlane, FaCoffee, FaFilm } from 'react-icons/fa';
+import { FaGamepad, FaPlane, FaCoffee, FaFilm, FaCampground, FaLanguage } from 'react-icons/fa';
 
 const hobbies = [
   {
@@ -11,6 +11,20 @@ const hobbies = [
     title: 'FUTBOL',
     span: 'md:col-span-2 md:row-span-2',
     accent: true,
+  },
+  {
+    id: 'camping',
+    Icon: FaCampground,
+    title: 'CAMPING',
+    span: 'md:col-span-1 md:row-span-2',
+    accent: false,
+  },
+  {
+    id: 'language',
+    Icon: FaLanguage,
+    title: 'YABANCI DİL',
+    span: 'md:col-span-1 md:row-span-1',
+    accent: false,
   },
   {
     id: 'gaming',
@@ -23,13 +37,6 @@ const hobbies = [
     id: 'travel',
     Icon: FaPlane,
     title: 'TRAVELLING',
-    span: 'md:col-span-1 md:row-span-2',
-    accent: false,
-  },
-  {
-    id: 'coffee',
-    Icon: FaCoffee,
-    title: 'COFFEE',
     span: 'md:col-span-1 md:row-span-1',
     accent: false,
   },
@@ -38,6 +45,13 @@ const hobbies = [
     Icon: FaFilm,
     title: 'FILM',
     span: 'md:col-span-2 md:row-span-1',
+    accent: false,
+  },
+  {
+    id: 'coffee',
+    Icon: FaCoffee,
+    title: 'COFFEE',
+    span: 'md:col-span-1 md:row-span-1',
     accent: false,
   },
 ];

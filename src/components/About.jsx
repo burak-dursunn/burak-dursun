@@ -16,8 +16,8 @@ const About = () => {
           transition={{ duration: 0.3 }}
           className="mb-16"
         >
-          <h2 
-            className="text-6xl sm:text-7xl font-heading font-black tracking-tighter text-transparent bg-clip-text transition-all duration-300 inline-flex" 
+          <h2
+            className="text-6xl sm:text-7xl font-heading font-black tracking-tighter text-transparent bg-clip-text transition-all duration-300 inline-flex"
             style={{ WebkitTextStroke: isDarkMode ? '2px white' : '2px #1a1a1a' }}
           >
             {headingLetters.map((char, i) => (
@@ -36,7 +36,7 @@ const About = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          
+
           {/* Summary Wire-Card */}
           <motion.div
             initial={{ opacity: 0, x: -80 }}
@@ -45,7 +45,7 @@ const About = () => {
             transition={{ duration: 0.7, type: 'spring', stiffness: 60 }}
             className="lg:col-span-7 wire-card bg-white/50 dark:bg-black/20 backdrop-blur-sm flex flex-col justify-center space-y-4 !p-5"
           >
-            <motion.div 
+            <motion.div
               className="w-10 h-10 bg-neo-green text-dark rounded-full flex items-center justify-center mb-1"
               initial={{ scale: 0, rotate: -180 }}
               whileInView={{ scale: 1, rotate: 0 }}
@@ -62,7 +62,7 @@ const About = () => {
               style={{ transformOrigin: 'top' }}
             >
               <p className="font-bold text-lg leading-relaxed border-l-4 border-neo-green pl-4 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-                Yazılım Mühendisliği bölümünden başarıyla mezun oldum. Modern web teknolojileri, veri mühendisliği ve yapay zeka alanlarına yoğun ilgi duyuyorum.
+                Yazılım Mühendisliği mezunuyum. Son 2.5 yıldır freelance olarak web uygulamaları ve web scraping projeleri geliştiriyor; farklı sektörlerin ihtiyaçlarına yönelik çözümler üretiyorum. Backend geliştirme, sistem mimarileri, veri mühendisliği ve yapay zeka alanlarına ilgi duyuyor, bu konularda kendimi sürekli geliştirmeye odaklanıyorum.
               </p>
             </motion.div>
             <motion.p
@@ -72,13 +72,13 @@ const About = () => {
               transition={{ delay: 0.6, duration: 0.5 }}
               className="font-medium text-gray-600 dark:text-gray-400 text-base transition-colors duration-300"
             >
-              Sadece kod yazmakla kalmıyor, problemlere analitik yaklaşıyor ve farklı algoritmalar geliştiriyorum. Boş zamanlarımda Python ve C dillerinin inceliklerini araştırıyor, edindiğim tecrübeleri Medium yazılarımla toplulukla paylaşıyorum.
+              Problemleri yalnızca kod seviyesinde değil, sistemin bütünü içinde değerlendirmeyi seviyorum. Python, React ve Node.js ile geliştirme yaparken performans, ölçeklenebilirlik ve sürdürülebilirliği ön planda tutuyor; API geliştirme, otomasyon sistemleri ve veri odaklı uygulamalar üzerinde çalışıyorum. Yeni teknolojileri araştırmayı, öğrendiklerimi projelerime uygulamayı ve sürekli gelişmeyi çalışma anlayışımın temel bir parçası olarak görüyorum.
             </motion.p>
           </motion.div>
 
           {/* Education Grid */}
           <div className="lg:col-span-5 grid grid-rows-2 gap-4">
-            
+
             {/* Firat Univ */}
             <motion.div
               initial={{ opacity: 0, x: 80 }}

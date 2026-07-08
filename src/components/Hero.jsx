@@ -148,7 +148,7 @@ const Hero = () => {
               className="wire-border p-6 mb-8 max-w-lg mt-6 backdrop-blur-sm bg-white/50 dark:bg-black/20"
             >
               <p className="font-medium text-gray-700 dark:text-gray-300 leading-relaxed transition-colors duration-300">
-                Yazılım dünyasının sınırlarını zorluyor, trendleri takip etmek yerine modern algoritmalarla onları yeniden inşa ediyorum. Node.js, Golang ve Python ile tam donanımlı geliştirici.
+                Backend geliştirme, sistem mimarileri ve yapay zeka odaklı çözümler üreten bir Yazılım Mühendisiyim. Gerçek problemlere sürdürülebilir ve ölçeklenebilir çözümler geliştirmeyi hedefliyorum.
               </p>
             </motion.div>
 

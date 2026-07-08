@@ -14,7 +14,7 @@ const ParticleBackground = () => {
       // Çekirdek motoru slim ile yüklüyoruz
       await loadSlim(tsParticles);
       
-      const particleColor = isDarkMode ? "#8CC84B" : "#4b5563"; // Karanlıkta yeşil, aydınlıkta koyu gri
+      const particleColor = isDarkMode ? "#8CC84B" : "#171717"; // Karanlıkta yeşil, aydınlıkta çok koyu gri/siyah
 
       container = await tsParticles.load({
         id: "tsparticles",

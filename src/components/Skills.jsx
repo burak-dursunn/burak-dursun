@@ -2,7 +2,7 @@ import { motion, useInView } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { useState, useEffect, useRef } from 'react';
 import {
-  SiJavascript, SiVuedotjs,
+  SiJavascript, SiVuedotjs, SiReact,
   SiNodedotjs, SiExpress, SiPython, SiC, SiCplusplus,
   SiMongodb, SiPostgresql, SiRedis,
   SiGit, SiNpm, SiPostman, SiSelenium, SiDocker, SiKubernetes, SiApachesuperset
@@ -31,6 +31,7 @@ const terminalLines = [
 ];
 
 const frontendSkills = [
+  { name: 'React', Icon: SiReact, color: '#61DAFB' },
   { name: 'JavaScript', Icon: SiJavascript, color: '#F7DF1E' },
   { name: 'Vue.js', Icon: SiVuedotjs, color: '#4FC08D' },
 ];
