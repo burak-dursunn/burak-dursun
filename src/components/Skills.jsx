@@ -99,12 +99,12 @@ const SkillCategory = ({ title, skills, categoryIndex }) => {
   return (
     <div
       ref={ref}
-      className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-start"
+      className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-12 items-start"
     >
       {/* Clip-path curtain reveal title */}
-      <div className="w-full lg:w-1/4 pt-4 overflow-hidden">
+      <div className="w-full sm:w-1/4 lg:w-1/4 pt-1 sm:pt-4 overflow-hidden shrink-0">
         <motion.h3
-          className="font-heading font-black text-2xl md:text-3xl uppercase tracking-widest text-dark dark:text-white"
+          className="font-heading font-black text-xl sm:text-2xl md:text-3xl uppercase tracking-widest text-dark dark:text-white border-b sm:border-b-0 border-dark/10 dark:border-white/10 pb-2 sm:pb-0 mb-0"
           initial={{ y: '110%', opacity: 0 }}
           animate={isInView ? { y: '0%', opacity: 1 } : { y: '110%', opacity: 0 }}
           transition={{
@@ -118,7 +118,7 @@ const SkillCategory = ({ title, skills, categoryIndex }) => {
       </div>
 
       {/* Staggered skill items sliding from below */}
-      <div className="w-full lg:w-3/4 flex flex-wrap gap-4 items-center pt-2">
+      <div className="w-full sm:w-3/4 lg:w-3/4 flex flex-wrap gap-3 sm:gap-4 items-center pt-1 sm:pt-2">
         {skills.map((skill, i) => (
           <motion.div
             key={i}
@@ -132,13 +132,13 @@ const SkillCategory = ({ title, skills, categoryIndex }) => {
               damping: 15,
             }}
             whileHover={{ scale: 1.08, transition: { duration: 0.2 } }}
-            className="flex items-center gap-2 group p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
+            className="flex items-center gap-1.5 sm:gap-2 group p-1.5 sm:p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800/50 transition-colors"
           >
             <skill.Icon
-              className={`text-4xl ${skill.customClass || ''}`}
+              className={`text-3xl sm:text-4xl ${skill.customClass || ''}`}
               style={skill.color ? { color: skill.color } : {}}
             />
-            <span className="font-bold text-gray-700 dark:text-gray-300 group-hover:text-neo-green transition-colors">
+            <span className="font-bold text-sm sm:text-base text-gray-700 dark:text-gray-300 group-hover:text-neo-green transition-colors">
               {skill.name}
             </span>
           </motion.div>
@@ -169,7 +169,7 @@ const Skills = () => {
   }, [isInView]);
 
   return (
-    <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 bg-transparent">
+    <section id="skills" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-transparent">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -185,7 +185,7 @@ const Skills = () => {
           */}
 
           {/* New Stack UI */}
-          <div className="flex flex-col gap-12 pt-10">
+          <div className="flex flex-col gap-8 sm:gap-12 pt-6 sm:pt-10">
             {/* Top label */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -194,12 +194,12 @@ const Skills = () => {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-3 text-gray-400 dark:text-gray-300"
             >
-              <FaAsterisk className="text-xl animate-spin-slow" />
-              <span className="font-bold tracking-widest uppercase text-sm">Tools and Technologies I work with</span>
+              <FaAsterisk className="text-base sm:text-xl animate-spin-slow" />
+              <span className="font-bold tracking-widest uppercase text-xs sm:text-sm">Tools and Technologies I work with</span>
             </motion.div>
 
             {/* Skills List */}
-            <div className="flex flex-col gap-12 w-full">
+            <div className="flex flex-col gap-8 sm:gap-12 w-full">
               <SkillCategory title="FRONTEND" skills={frontendSkills} categoryIndex={0} />
               <SkillCategory title="BACKEND" skills={backendSkills} categoryIndex={1} />
               <SkillCategory title="DATABASE" skills={databaseSkills} categoryIndex={2} />
