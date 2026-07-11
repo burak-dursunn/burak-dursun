@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiGithub, FiExternalLink } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
@@ -57,8 +57,10 @@ const ProjectRow = ({ project, index, isHovered, onHover, onLeave }) => {
           {String(index + 1).padStart(2, '0')}.
         </span>
 
-        {/* İsim + Tech stack */}
+        {/* İsim + Tech stack + Butonlar (alt satırda) */}
         <div className="flex-1 min-w-0">
+
+          {/* Başlık */}
           <div className="relative overflow-hidden inline-block">
             <span
               className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black text-dark/25 dark:text-white/20 select-none pointer-events-none"
@@ -81,55 +83,62 @@ const ProjectRow = ({ project, index, isHovered, onHover, onLeave }) => {
             <span className="sr-only">{project.title}</span>
           </div>
 
-          {/* Tech stack */}
-          <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1 mt-1 sm:mt-1.5">
-            {project.tech.map((t, i) => (
-              <span
-                key={i}
-                className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono text-gray-400 dark:text-gray-600 tracking-wider uppercase transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-500"
-              >
-                {t}
-                {i < project.tech.length - 1 && (
-                  <span className="w-1 h-1 rounded-full bg-gray-400/40" />
-                )}
-              </span>
-            ))}
+          {/* Tech stack + hover butonları — aynı satırda, sabit yükseklik */}
+          <div className="flex items-center gap-4 mt-1 sm:mt-1.5 flex-wrap min-h-[28px]">
+            {/* Tech tags */}
+            <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1">
+              {project.tech.map((t, i) => (
+                <span
+                  key={i}
+                  className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono text-gray-400 dark:text-gray-600 tracking-wider uppercase transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-500"
+                >
+                  {t}
+                  {i < project.tech.length - 1 && (
+                    <span className="w-1 h-1 rounded-full bg-gray-400/40" />
+                  )}
+                </span>
+              ))}
+            </div>
+
+            {/* Linkler — hover’da soldan kayarak gelen, tech stack’in hemen yanında */}
+            <AnimatePresence>
+              {isHovered && (
+                <motion.div
+                  className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.22, ease: 'easeOut' }}
+                >
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Kodu İncele"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-dark/20 dark:border-white/15 text-gray-500 dark:text-gray-400 hover:border-neo-green hover:text-neo-green hover:bg-neo-green/10 transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
+                  >
+                    <FiGithub className="text-xs sm:text-sm" />
+                    <span>GitHub</span>
+                  </a>
+
+                  {project.live && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      title="Canlı Demo"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-neo-green/10 border border-neo-green/40 text-neo-green hover:bg-neo-green hover:text-black transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
+                    >
+                      <FiExternalLink className="text-xs sm:text-sm" />
+                      <span>Demo</span>
+                    </a>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
-
-        {/* Linkler */}
-        <div className="flex items-center gap-2 shrink-0">
-          <motion.a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            title="Kodu İncele"
-            onClick={(e) => e.stopPropagation()}
-            initial={false}
-            animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-dark/20 dark:border-white/15 text-gray-500 dark:text-gray-400 hover:border-neo-green hover:text-neo-green hover:bg-neo-green/10 transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
-          >
-            <FiGithub className="text-sm sm:text-base" />
-            <span className="hidden sm:inline">GitHub</span>
-          </motion.a>
-
-          {project.live && (
-            <motion.a
-              href={project.live}
-              target="_blank"
-              rel="noreferrer"
-              title="Canlı Demo"
-              onClick={(e) => e.stopPropagation()}
-              initial={false}
-              animate={isHovered ? { opacity: 1, x: 0 } : { opacity: 0, x: 12 }}
-              transition={{ duration: 0.3, delay: 0.05, ease: 'easeOut' }}
-              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-neo-green/10 border border-neo-green/40 text-neo-green hover:bg-neo-green hover:text-black transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
-            >
-              <FiExternalLink className="text-sm sm:text-base" />
-              <span className="hidden sm:inline">Demo</span>
-            </motion.a>
-          )}
         </div>
       </div>
     </motion.div>
@@ -153,7 +162,7 @@ const ProjectCard = ({ project, index }) => {
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-top"
           />
           <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gradient-to-t from-black/70 to-transparent z-20 flex items-center justify-between">
             <span className="text-white font-heading font-bold text-xs tracking-widest uppercase">{project.title}</span>
@@ -198,7 +207,7 @@ const ProjectCard = ({ project, index }) => {
 };
 
 /* Desktop: sağ tarafta sabit görsel paneli */
-const FixedImagePreview = ({ activeProject }) => {
+const FixedImagePreview = ({ activeProject, onMouseEnter, onMouseLeave }) => {
   return (
     <AnimatePresence mode="wait">
       {activeProject && (
@@ -208,7 +217,9 @@ const FixedImagePreview = ({ activeProject }) => {
           animate={{ opacity: 1, scale: 1, x: 0 }}
           exit={{ opacity: 0, scale: 0.94, x: 24 }}
           transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          className="fixed right-6 xl:right-16 top-1/2 -translate-y-1/2 z-30 pointer-events-none hidden lg:block"
+          className="fixed right-6 xl:right-16 top-1/2 -translate-y-1/2 z-30 hidden lg:block"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ width: 'min(36vw, 460px)' }}
         >
           {activeProject.image ? (
@@ -251,8 +262,20 @@ const FixedImagePreview = ({ activeProject }) => {
 const Projects = () => {
   const { isDarkMode } = useTheme();
   const [hoveredId, setHoveredId] = useState(null);
+  const leaveTimer = useRef(null);
 
   const activeProject = projects.find((p) => p.id === hoveredId) || null;
+
+  /* Satırdan veya resimden fare ayrılınca kısa gecikme — bu süre içinde
+     karşı tarafa geçilirse timer iptal edilir, resim kaybolmaz */
+  const handleEnter = (id) => {
+    clearTimeout(leaveTimer.current);
+    setHoveredId(id);
+  };
+
+  const handleLeave = () => {
+    leaveTimer.current = setTimeout(() => setHoveredId(null), 80);
+  };
 
   return (
     <section id="projects" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 bg-transparent relative">
@@ -267,7 +290,7 @@ const Projects = () => {
         >
           <FaAsterisk className="text-base sm:text-lg animate-spin-slow text-neo-green" />
           <span className="text-xs font-bold tracking-[0.20em] sm:tracking-[0.25em] uppercase text-gray-500 dark:text-gray-400">
-            Seçili Projeler
+            Selected Projects
           </span>
         </motion.div>
 
@@ -280,8 +303,8 @@ const Projects = () => {
               project={project}
               index={index}
               isHovered={hoveredId === project.id}
-              onHover={() => setHoveredId(project.id)}
-              onLeave={() => setHoveredId(null)}
+              onHover={() => handleEnter(project.id)}
+              onLeave={handleLeave}
             />
           ))}
         </div>
@@ -295,7 +318,11 @@ const Projects = () => {
       </div>
 
       {/* Desktop: fixed görsel (sadece lg+) */}
-      <FixedImagePreview activeProject={activeProject} />
+      <FixedImagePreview
+        activeProject={activeProject}
+        onMouseEnter={() => handleEnter(activeProject?.id)}
+        onMouseLeave={handleLeave}
+      />
     </section>
   );
 };

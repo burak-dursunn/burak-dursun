@@ -51,12 +51,12 @@ const databaseSkills = [
 ];
 
 const toolsSkills = [
-  { name: 'Git', Icon: SiGit, color: '#F05032' },
-  { name: 'npm', Icon: SiNpm, color: '#CB3837' },
-  { name: 'Postman', Icon: SiPostman, color: '#FF6C37' },
-  { name: 'Selenium', Icon: SiSelenium, color: '#43B02A' },
   { name: 'Docker', Icon: SiDocker, color: '#2496ED' },
   { name: 'Kubernetes', Icon: SiKubernetes, color: '#326CE5' },
+  { name: 'Git', Icon: SiGit, color: '#F05032' },
+  { name: 'npm', Icon: SiNpm, color: '#CB3837' },
+  { name: 'Selenium', Icon: SiSelenium, color: '#43B02A' },
+  { name: 'Postman', Icon: SiPostman, color: '#FF6C37' },
   { name: 'Apache Superset', Icon: SiApachesuperset, color: '#00A699' },
 ];
 

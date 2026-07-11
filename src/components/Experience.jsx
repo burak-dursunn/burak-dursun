@@ -13,11 +13,11 @@ const experiences = [
   },
   {
     id: 5,
-    title: "Freelance Software Developer",
+    title: "Freelance Full-Stack Developer",
     company: "Freelance",
     date: "Oca 2024 - Günümüz",
-    description: "Web siteleri ve web scraping alanlarında çeşitli projeler alarak farklı sektörlerin ihtiyaçlarına yönelik özel yazılım çözümleri ürettim ve geliştirmeye devam ediyorum.",
-    tags: ["Web Development", "Web Scraping", "Freelance"],
+    description: "Çeşitli sektörler için web siteleri, AI destekli araçlar ve web scraping çözümleri geliştirerek özel yazılım ihtiyaçlarına yönelik çözümler ürettim ve geliştirmeye devam ediyorum.",
+    tags: ["Full-Stack Development", "Web Scraping", "Freelance"],
   },
   {
     id: 2,

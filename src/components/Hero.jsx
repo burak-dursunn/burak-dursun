@@ -154,7 +154,7 @@ const Hero = () => {
               transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.1 }}
               className="bg-neo-yellow text-dark font-heading font-bold text-xs sm:text-sm px-3 py-1 mb-4 sm:mb-6"
             >
-              SOFTWARE ENGINEER
+              JR. SOFTWARE ENGINEER
             </motion.div>
 
             {/* Name */}
