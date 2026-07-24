@@ -5,7 +5,7 @@ import {
   SiJavascript, SiVuedotjs, SiReact,
   SiNodedotjs, SiExpress, SiPython, SiC, SiCplusplus,
   SiMongodb, SiPostgresql, SiRedis,
-  SiGit, SiNpm, SiPostman, SiSelenium, SiDocker, SiKubernetes, SiApachesuperset
+  SiGit, SiNpm, SiPostman, SiSelenium, SiDocker, SiKubernetes, SiApachesuperset, SiHtml5
 } from 'react-icons/si';
 import { FaAsterisk } from 'react-icons/fa';
 
@@ -34,6 +34,7 @@ const frontendSkills = [
   { name: 'React', Icon: SiReact, color: '#61DAFB' },
   { name: 'JavaScript', Icon: SiJavascript, color: '#F7DF1E' },
   { name: 'Vue.js', Icon: SiVuedotjs, color: '#4FC08D' },
+  { name: 'Canvas API', Icon: SiHtml5, color: '#E34F26' },
 ];
 
 const backendSkills = [

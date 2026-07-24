@@ -5,6 +5,9 @@ import { useTheme } from '../context/ThemeContext';
 import pemaHomeImg from '../assets/proje-görselleri/pema-home1.png';
 import bilgecanImg from '../assets/proje-görselleri/Bilgecan.png';
 import portfolioImg from '../assets/proje-görselleri/portfolio.png';
+import vantImg from '../assets/proje-görselleri/vant1.png';
+import vantVideo from '../assets/proje videoları/demo2.mp4';
+import portfolioVideo from '../assets/proje videoları/portfolio.mp4';
 import { FaAsterisk } from 'react-icons/fa';
 
 const projects = [
@@ -14,8 +17,19 @@ const projects = [
     type: "Frontend Geliştirme",
     tech: ["React", "Framer Motion", "Vite"],
     image: portfolioImg,
+    video: portfolioVideo,
     github: "https://github.com/burak-dursunn/burak-dursun",
     live: "https://burak-dursun.vercel.app/",
+  },
+  {
+    id: 4,
+    title: "VANT Streetwear",
+    type: "E-Ticaret Platformu",
+    tech: ["HTML5", "CSS3", "JavaScript", "Canvas API"],
+    image: vantImg,
+    video: vantVideo,
+    github: "https://github.com/burak-dursunn/streetwear-showcase",
+    live: "https://streetwear-showcase.vercel.app/",
   },
   {
     id: 2,
@@ -222,7 +236,26 @@ const FixedImagePreview = ({ activeProject, onMouseEnter, onMouseLeave }) => {
           onMouseLeave={onMouseLeave}
           style={{ width: 'min(36vw, 460px)' }}
         >
-          {activeProject.image ? (
+          {activeProject.video ? (
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_8px_64px_rgba(0,0,0,0.5)] border border-white/10 bg-black">
+              <video
+                src={activeProject.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto block object-cover"
+              />
+              <div className="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-20 flex items-center justify-between">
+                <span className="text-white font-heading font-bold text-sm tracking-widest uppercase">
+                  {activeProject.title}
+                </span>
+                <span className="text-neo-green text-xs font-mono tracking-wider uppercase">
+                  {activeProject.type}
+                </span>
+              </div>
+            </div>
+          ) : activeProject.image ? (
             <div className="relative rounded-2xl overflow-hidden shadow-[0_8px_64px_rgba(0,0,0,0.5)] border border-white/10">
               <div className="absolute inset-0 bg-gradient-to-br from-neo-green/8 via-transparent to-transparent pointer-events-none z-10" />
               <img
