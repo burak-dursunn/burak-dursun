@@ -1,14 +1,29 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiGithub, FiExternalLink } from 'react-icons/fi';
-import { useTheme } from '../context/ThemeContext';
-import pemaHomeImg from '../assets/proje-görselleri/pema-home1.png';
-import bilgecanImg from '../assets/proje-görselleri/Bilgecan.png';
-import portfolioImg from '../assets/proje-görselleri/portfolio.png';
-import vantImg from '../assets/proje-görselleri/vant1.png';
-import vantVideo from '../assets/proje videoları/demo2.mp4';
-import portfolioVideo from '../assets/proje videoları/portfolio.mp4';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { FiGithub, FiExternalLink, FiX, FiPlay } from 'react-icons/fi';
 import { FaAsterisk } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
+
+import pemaHomeImg from '../assets/proje-görselleri/pema-home1.webp';
+import bilgecanImg from '../assets/proje-görselleri/Bilgecan.webp';
+import portfolioImg from '../assets/proje-görselleri/portfolio.webp';
+import vantImg from '../assets/proje-görselleri/vant1.webp';
+import erganiImg from '../assets/proje-görselleri/Ergani Yıldız Spor Futbol Kulübü.webp';
+import inboxImg from '../assets/proje-görselleri/inbox-coffe.webp';
+
+import vantVideo from '../assets/proje videoları/vans.webm';
+import portfolioVideo from '../assets/proje videoları/portfolio.webm';
+import erganiVideo from '../assets/proje videoları/ergani-yıldız-spor.webm';
+import inboxVideo from '../assets/proje videoları/inbox-coffee.webm';
+
+const CASSETTE_COLORS = [
+  { body: '#1a1a2e', reel: '#8CC84B', label: '#16213e', accent: '#8CC84B', labelText: '#fff' },
+  { body: '#2d1b69', reel: '#ffa6f6', label: '#1a0a40', accent: '#ffa6f6', labelText: '#fff' },
+  { body: '#0d2137', reel: '#80ece0', label: '#071520', accent: '#80ece0', labelText: '#fff' },
+  { body: '#1a2d0d', reel: '#ffde59', label: '#0d1a06', accent: '#ffde59', labelText: '#1a1a1a' },
+  { body: '#2d1a0d', reel: '#ff8c42', label: '#1a0d06', accent: '#ff8c42', labelText: '#fff' },
+  { body: '#2d0d1a', reel: '#ff6b9d', label: '#1a0610', accent: '#ff6b9d', labelText: '#fff' },
+];
 
 const projects = [
   {
@@ -20,6 +35,29 @@ const projects = [
     video: portfolioVideo,
     github: "https://github.com/burak-dursunn/burak-dursun",
     live: "https://burak-dursun.vercel.app/",
+    color: CASSETTE_COLORS[0],
+  },
+  {
+    id: 6,
+    title: "Inbox Coffee",
+    type: "Kurumsal Web Sitesi",
+    tech: ["React", "Tailwind CSS", "Framer Motion"],
+    image: inboxImg,
+    video: inboxVideo,
+    github: "https://github.com/burak-dursunn/inbox-coffee",
+    live: "https://inbox-coffe.vercel.app/",
+    color: CASSETTE_COLORS[1],
+  },
+  {
+    id: 5,
+    title: "Ergani Yıldız Spor",
+    type: "Spor Kulübü Platformu",
+    tech: ["React", "Tailwind CSS"],
+    image: erganiImg,
+    video: erganiVideo,
+    github: "https://github.com/burak-dursunn/yildiz-spor",
+    live: "https://ergani-y-ld-z-spor-kulubu.vercel.app/",
+    color: CASSETTE_COLORS[2],
   },
   {
     id: 4,
@@ -30,6 +68,7 @@ const projects = [
     video: vantVideo,
     github: "https://github.com/burak-dursunn/streetwear-showcase",
     live: "https://streetwear-showcase.vercel.app/",
+    color: CASSETTE_COLORS[3],
   },
   {
     id: 2,
@@ -37,8 +76,10 @@ const projects = [
     type: "E-Ticaret Platformu",
     tech: ["Vue.js", "Golang"],
     image: pemaHomeImg,
+    video: null,
     github: "https://github.com/burak-dursunn/pema-home-website",
     live: "https://pema-home.vercel.app/",
+    color: CASSETTE_COLORS[4],
   },
   {
     id: 3,
@@ -46,316 +87,529 @@ const projects = [
     type: "AI Platform",
     tech: ["Vue.js", "Python", "REST API"],
     image: bilgecanImg,
+    video: null,
     github: "https://github.com/burak-dursunn/BilgecAi",
     live: null,
+    color: CASSETTE_COLORS[5],
   },
 ];
 
-/* Desktop: tek proje satırı */
-const ProjectRow = ({ project, index, isHovered, onHover, onLeave }) => {
+/* ─── Pixel art SVG kaset ─── */
+const CassetteSVG = ({ project, isSelected, onClick, index }) => {
+  const c = project.color;
+  const reelAnim = useAnimation();
+
+  useEffect(() => {
+    if (isSelected) {
+      reelAnim.start({ rotate: 360, transition: { duration: 2, repeat: Infinity, ease: 'linear' } });
+    } else {
+      reelAnim.stop();
+      reelAnim.set({ rotate: 0 });
+    }
+  }, [isSelected]);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      onClick={onClick}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      className="group relative border-b border-dark/10 dark:border-white/10 py-5 sm:py-6 cursor-pointer"
+      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ y: -12, scale: 1.04 }}
+      whileTap={{ scale: 0.96 }}
+      className="relative cursor-pointer select-none"
+      style={{ imageRendering: 'pixelated' }}
     >
-      <div className="absolute inset-0 bg-neo-green/0 group-hover:bg-neo-green/[0.03] transition-colors duration-500 pointer-events-none rounded-lg" />
+      {/* Kaset gövdesi */}
+      <div
+        className="relative w-[140px] sm:w-[160px]"
+        style={{ aspectRatio: '3/2', imageRendering: 'pixelated' }}
+      >
+        <svg viewBox="0 0 160 108" xmlns="http://www.w3.org/2000/svg" style={{ imageRendering: 'pixelated', display: 'block', width: '100%', height: '100%' }}>
+          {/* Dış gövde */}
+          <rect x="2" y="2" width="156" height="104" rx="4" fill={c.body} />
+          <rect x="2" y="2" width="156" height="104" rx="4" fill="none" stroke={c.accent} strokeWidth="2" />
 
-      <div className="relative z-10 flex items-center gap-4 sm:gap-6 lg:gap-8">
-        {/* Numara */}
-        <span className="text-xs sm:text-sm font-mono text-gray-400 dark:text-gray-600 font-bold shrink-0 w-6 sm:w-7 transition-colors duration-300 group-hover:text-neo-green">
-          {String(index + 1).padStart(2, '0')}.
+          {/* Üst & alt şerit dekorlar */}
+          <rect x="6" y="6" width="148" height="4" fill={c.accent} opacity="0.25" />
+          <rect x="6" y="98" width="148" height="4" fill={c.accent} opacity="0.25" />
+
+          {/* Merkez label alanı */}
+          <rect x="30" y="14" width="100" height="58" rx="2" fill={c.label} />
+          <rect x="30" y="14" width="100" height="58" rx="2" fill="none" stroke={c.accent} strokeWidth="1" opacity="0.6" />
+
+          {/* Kapak görseli (clipPath ile) */}
+          <defs>
+            <clipPath id={`clip-${project.id}`}>
+              <rect x="31" y="15" width="98" height="56" rx="1" />
+            </clipPath>
+          </defs>
+          <image
+            href={project.image}
+            x="31" y="15" width="98" height="56"
+            clipPath={`url(#clip-${project.id})`}
+            preserveAspectRatio="xMidYMid slice"
+            opacity="0.85"
+          />
+          {/* Görsel üzeri label overlay */}
+          <rect x="31" y="51" width="98" height="20" fill="rgba(0,0,0,0.72)" />
+          <text
+            x="80" y="62"
+            textAnchor="middle"
+            fontSize="6"
+            fontFamily="monospace"
+            fontWeight="bold"
+            fill={c.accent}
+            style={{ imageRendering: 'pixelated' }}
+          >
+            {project.title.toUpperCase().slice(0, 18)}
+          </text>
+          <text
+            x="80" y="69"
+            textAnchor="middle"
+            fontSize="4"
+            fontFamily="monospace"
+            fill="#ffffff"
+            opacity="0.7"
+          >
+            {project.type.slice(0, 22)}
+          </text>
+
+          {/* Sol makara */}
+          <g transform="translate(22, 80)">
+            <circle cx="0" cy="0" r="14" fill={c.body} stroke={c.accent} strokeWidth="1.5" />
+            <circle cx="0" cy="0" r="9" fill={c.body} stroke={c.accent} strokeWidth="1" opacity="0.5" />
+            <motion.g animate={reelAnim}>
+              <rect x="-1" y="-13" width="2" height="7" rx="1" fill={c.reel} />
+              <rect x="-1" y="6" width="2" height="7" rx="1" fill={c.reel} />
+              <rect x="-13" y="-1" width="7" height="2" rx="1" fill={c.reel} />
+              <rect x="6" y="-1" width="7" height="2" rx="1" fill={c.reel} />
+            </motion.g>
+            <circle cx="0" cy="0" r="4" fill={c.reel} opacity="0.9" />
+          </g>
+
+          {/* Sağ makara */}
+          <g transform="translate(138, 80)">
+            <circle cx="0" cy="0" r="14" fill={c.body} stroke={c.accent} strokeWidth="1.5" />
+            <circle cx="0" cy="0" r="9" fill={c.body} stroke={c.accent} strokeWidth="1" opacity="0.5" />
+            <motion.g animate={reelAnim}>
+              <rect x="-1" y="-13" width="2" height="7" rx="1" fill={c.reel} />
+              <rect x="-1" y="6" width="2" height="7" rx="1" fill={c.reel} />
+              <rect x="-13" y="-1" width="7" height="2" rx="1" fill={c.reel} />
+              <rect x="6" y="-1" width="7" height="2" rx="1" fill={c.reel} />
+            </motion.g>
+            <circle cx="0" cy="0" r="4" fill={c.reel} opacity="0.9" />
+          </g>
+
+          {/* Bant kanalı */}
+          <rect x="36" y="76" width="88" height="6" rx="1" fill="rgba(0,0,0,0.6)" />
+          <rect x="38" y="78" width="84" height="2" rx="1" fill={c.reel} opacity="0.4" />
+
+          {/* Seçili gösterge */}
+          {isSelected && (
+            <>
+              <rect x="2" y="2" width="156" height="104" rx="4" fill="none" stroke={c.accent} strokeWidth="3" opacity="0.8" />
+              <circle cx="10" cy="10" r="3" fill={c.accent} />
+              <circle cx="150" cy="10" r="3" fill={c.accent} />
+            </>
+          )}
+        </svg>
+
+        {/* Parıltı efekti */}
+        <div className="absolute inset-0 rounded-sm pointer-events-none" style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%)',
+        }} />
+      </div>
+
+      {/* Alt etiket */}
+      <div className="mt-2 text-center">
+        <span className="text-[9px] font-mono tracking-widest uppercase opacity-60 dark:opacity-50"
+          style={{ color: c.accent }}>
+          {String(index + 1).padStart(2, '0')}
         </span>
+      </div>
+    </motion.div>
+  );
+};
 
-        {/* İsim + Tech stack + Butonlar (alt satırda) */}
-        <div className="flex-1 min-w-0">
+/* ─── Pixel art kaset çalar makinesi ─── */
+const CassettePlayer = ({ project, onClose }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const c = project.color;
 
-          {/* Başlık */}
-          <div className="relative overflow-hidden inline-block">
-            <span
-              className="block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black text-dark/25 dark:text-white/20 select-none pointer-events-none"
-              aria-hidden="true"
-            >
-              {project.title}
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  }, [project]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <motion.div
+      key={project.id}
+      initial={{ opacity: 0, scale: 0.85, y: 40 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9, y: 20 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full max-w-3xl mx-auto"
+    >
+      {/* Çalar dış kasası */}
+      <div className="relative" style={{
+        background: '#0d0d14',
+        border: `3px solid ${c.accent}`,
+        boxShadow: `0 0 0 1px rgba(0,0,0,0.5), 6px 6px 0 ${c.accent}40, 0 20px 60px rgba(0,0,0,0.8)`,
+        imageRendering: 'pixelated',
+      }}>
+        {/* Üst panel — makine başlığı */}
+        <div className="flex items-center justify-between px-4 py-2.5 border-b"
+          style={{ borderColor: `${c.accent}40`, background: `${c.body}` }}>
+          <div className="flex items-center gap-2">
+            {/* Pixel LED göstergeler */}
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1.5 h-1.5"
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.18, ease: 'easeInOut' }}
+                style={{ background: c.accent, imageRendering: 'pixelated' }}
+              />
+            ))}
+            <span className="text-[7px] tracking-[0.15em] uppercase ml-1" style={{ color: c.accent, fontFamily: "'Press Start 2P', monospace" }}>
+              BD-PLAYER
             </span>
-            <span
-              className="absolute inset-0 block text-xl sm:text-2xl md:text-3xl lg:text-4xl font-heading font-black text-neo-green select-none pointer-events-none"
-              style={{
-                clipPath: isHovered ? 'inset(0 0% 0 0)' : 'inset(0 100% 0 0)',
-                transition: isHovered
-                  ? 'clip-path 0.55s cubic-bezier(0.76, 0, 0.24, 1)'
-                  : 'clip-path 0.45s cubic-bezier(0.76, 0, 0.24, 1)',
-              }}
-              aria-hidden="true"
+          </div>
+          <button
+            onClick={onClose}
+            className="flex items-center justify-center w-6 h-6 text-gray-400 hover:text-white transition-colors"
+            style={{ border: '1px solid rgba(255,255,255,0.15)' }}
+          >
+            <FiX className="text-xs" />
+          </button>
+        </div>
+
+        {/* Kaset giriş slotu animasyonu */}
+        <div className="flex items-center gap-2 px-4 py-2 border-b" style={{ borderColor: `${c.accent}20`, background: 'rgba(0,0,0,0.3)' }}>
+          <div className="flex-1 flex items-center gap-2">
+            <div className="text-[7px] text-gray-500" style={{ fontFamily: "'Press Start 2P', monospace" }}>SLOT:</div>
+            {/* Animasyonlu kaset küçük görünümü */}
+            <motion.div
+              initial={{ x: -60, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="flex items-center gap-2"
             >
-              {project.title}
-            </span>
-            <span className="sr-only">{project.title}</span>
+              <div className="h-4 px-2 flex items-center gap-1.5"
+                style={{ background: c.body, border: `1px solid ${c.accent}`, minWidth: 80 }}>
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: c.accent }} />
+                <span className="text-[8px] font-mono font-bold" style={{ color: c.accent }}>
+                  {project.title.slice(0, 14).toUpperCase()}
+                </span>
+              </div>
+              {/* Kaset giriş oku */}
+              <motion.div
+                animate={{ x: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="text-[8px] font-mono"
+                style={{ color: c.accent }}
+              >▶▶</motion.div>
+              <div className="text-[8px] font-mono" style={{ color: c.accent, border: `1px solid ${c.accent}30`, padding: '1px 4px' }}>
+                ████
+              </div>
+            </motion.div>
+          </div>
+          {/* Zaman göstergesi */}
+          <div className="text-[9px] font-mono" style={{ color: c.reel }}>
+            <motion.span
+              animate={{ opacity: [1, 0.2, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            >● REC</motion.span>
+          </div>
+        </div>
+
+        {/* Ana ekran — video veya görsel */}
+        <div className="relative overflow-hidden" style={{ background: '#000', borderBottom: `2px solid ${c.accent}30` }}>
+          {/* Ekran tarama çizgisi efekti */}
+          <div className="absolute inset-0 pointer-events-none z-10" style={{
+            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0px, rgba(0,0,0,0.08) 1px, transparent 1px, transparent 3px)',
+          }} />
+          {/* Ekran köşe parıltısı */}
+          <div className="absolute inset-0 pointer-events-none z-10" style={{
+            background: 'radial-gradient(ellipse at 20% 20%, rgba(255,255,255,0.04) 0%, transparent 60%)',
+          }} />
+
+          {project.video ? (
+            <video
+              ref={videoRef}
+              src={project.video}
+              loop
+              muted
+              playsInline
+              className="w-full block"
+              style={{ maxHeight: '320px', objectFit: 'cover' }}
+            />
+          ) : (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full block"
+              style={{ maxHeight: '320px', objectFit: 'cover' }}
+            />
+          )}
+
+          {/* Proje başlığı overlay */}
+          <div className="absolute bottom-0 left-0 right-0 px-4 py-3 z-20"
+            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)' }}>
+            <div className="flex items-end justify-between">
+              <div>
+                <div className="text-[9px] font-mono tracking-[0.25em] uppercase mb-0.5" style={{ color: c.accent }}>
+                  {project.type}
+                </div>
+                <h3 className="text-white font-bold text-lg sm:text-xl leading-tight font-mono">
+                  {project.title}
+                </h3>
+              </div>
+              {project.video && (
+                <button onClick={togglePlay}
+                  className="flex items-center justify-center w-8 h-8 rounded-sm transition-all"
+                  style={{ background: c.accent, color: '#000' }}>
+                  {isPlaying ? (
+                    <svg viewBox="0 0 12 12" className="w-3 h-3" fill="currentColor">
+                      <rect x="2" y="1" width="3" height="10" />
+                      <rect x="7" y="1" width="3" height="10" />
+                    </svg>
+                  ) : (
+                    <FiPlay className="text-xs" />
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Alt kontrol paneli */}
+        <div className="px-4 py-3" style={{ background: c.body }}>
+          {/* Tech tags */}
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {project.tech.map((t, i) => (
+              <span key={i} className="text-[9px] font-mono px-2 py-0.5 tracking-widest uppercase"
+                style={{
+                  background: 'rgba(0,0,0,0.4)',
+                  border: `1px solid ${c.accent}50`,
+                  color: c.accent,
+                }}>
+                {t}
+              </span>
+            ))}
           </div>
 
-          {/* Tech stack + hover butonları — aynı satırda, sabit yükseklik */}
-          <div className="flex items-center gap-4 mt-1 sm:mt-1.5 flex-wrap min-h-[28px]">
-            {/* Tech tags */}
-            <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-1">
-              {project.tech.map((t, i) => (
-                <span
+          {/* Kontrol butonları */}
+          <div className="flex items-center gap-2">
+            {/* Pixel art VU meter */}
+            <div className="flex items-end gap-0.5 h-6 mr-auto">
+              {[4, 6, 8, 5, 7, 3, 8, 6, 5, 4].map((h, i) => (
+                <motion.div
                   key={i}
-                  className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs font-mono text-gray-400 dark:text-gray-600 tracking-wider uppercase transition-colors duration-300 group-hover:text-gray-500 dark:group-hover:text-gray-500"
-                >
-                  {t}
-                  {i < project.tech.length - 1 && (
-                    <span className="w-1 h-1 rounded-full bg-gray-400/40" />
-                  )}
-                </span>
+                  className="w-1.5"
+                  style={{ background: c.accent, opacity: 0.7 }}
+                  animate={{ height: [`${h * 2}px`, `${Math.max(2, (h + 3) * 2)}px`, `${h * 2}px`] }}
+                  transition={{ duration: 0.8 + i * 0.1, repeat: Infinity, ease: 'easeInOut' }}
+                />
               ))}
             </div>
 
-            {/* Linkler — hover’da soldan kayarak gelen, tech stack’in hemen yanında */}
-            <AnimatePresence>
-              {isHovered && (
-                <motion.div
-                  className="flex items-center gap-2"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.22, ease: 'easeOut' }}
-                >
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Kodu İncele"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-dark/20 dark:border-white/15 text-gray-500 dark:text-gray-400 hover:border-neo-green hover:text-neo-green hover:bg-neo-green/10 transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
-                  >
-                    <FiGithub className="text-xs sm:text-sm" />
-                    <span>GitHub</span>
-                  </a>
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
+                style={{
+                  background: 'transparent',
+                  border: `2px solid ${c.accent}`,
+                  color: c.accent,
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = c.accent; e.currentTarget.style.color = '#000'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = c.accent; }}
+              >
+                <FiGithub className="text-sm" />
+                GitHub
+              </a>
+            )}
 
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="Canlı Demo"
-                      onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-neo-green/10 border border-neo-green/40 text-neo-green hover:bg-neo-green hover:text-black transition-colors duration-200 text-[10px] sm:text-xs font-bold tracking-widest uppercase"
-                    >
-                      <FiExternalLink className="text-xs sm:text-sm" />
-                      <span>Demo</span>
-                    </a>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 font-mono text-[10px] font-bold tracking-widest uppercase transition-all"
+                style={{
+                  background: c.accent,
+                  border: `2px solid ${c.accent}`,
+                  color: '#000',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.opacity = '0.85'; }}
+                onMouseLeave={e => { e.currentTarget.style.opacity = '1'; }}
+              >
+                <FiExternalLink className="text-sm" />
+                Demo
+              </a>
+            )}
           </div>
         </div>
-      </div>
-    </motion.div>
-  );
-};
 
-/* Mobil: kart görünümü */
-const ProjectCard = ({ project, index }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.12, duration: 0.5 }}
-      className="wire-border bg-white/50 dark:bg-black/20 backdrop-blur-sm overflow-hidden"
-    >
-      {/* Görsel */}
-      {project.image && (
-        <div className="relative w-full aspect-video overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-neo-green/8 via-transparent to-transparent z-10" />
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover object-top"
-          />
-          <div className="absolute bottom-0 left-0 right-0 px-4 py-2 bg-gradient-to-t from-black/70 to-transparent z-20 flex items-center justify-between">
-            <span className="text-white font-heading font-bold text-xs tracking-widest uppercase">{project.title}</span>
-            <span className="text-neo-green text-[10px] font-mono tracking-wider uppercase">{project.type}</span>
-          </div>
-        </div>
-      )}
-
-      {/* İçerik */}
-      <div className="p-4 sm:p-5">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
-          {project.tech.map((t, i) => (
-            <span key={i} className="text-[10px] font-mono text-gray-500 dark:text-gray-400 tracking-wider uppercase bg-gray-100 dark:bg-white/5 px-2 py-0.5 rounded-full">
-              {t}
-            </span>
+        {/* Alt dekor çizgileri — pixel art stil */}
+        <div className="px-4 py-2 flex items-center gap-1" style={{ background: 'rgba(0,0,0,0.3)' }}>
+          {[...Array(32)].map((_, i) => (
+            <div key={i} className="flex-1 h-0.5" style={{
+              background: i % 4 === 0 ? c.accent : `${c.accent}20`,
+            }} />
           ))}
         </div>
-
-        <div className="flex items-center gap-3">
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-1.5 px-4 py-2 border border-dark/20 dark:border-white/15 text-gray-600 dark:text-gray-300 hover:border-neo-green hover:text-neo-green transition-colors text-xs font-bold tracking-widest uppercase rounded-full"
-          >
-            <FiGithub /> GitHub
-          </a>
-          {project.live && (
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 px-4 py-2 bg-neo-green/10 border border-neo-green/40 text-neo-green hover:bg-neo-green hover:text-black transition-colors text-xs font-bold tracking-widest uppercase rounded-full"
-            >
-              <FiExternalLink /> Demo
-            </a>
-          )}
-        </div>
       </div>
     </motion.div>
   );
 };
 
-/* Desktop: sağ tarafta sabit görsel paneli */
-const FixedImagePreview = ({ activeProject, onMouseEnter, onMouseLeave }) => {
-  return (
-    <AnimatePresence mode="wait">
-      {activeProject && (
-        <motion.div
-          key={activeProject.id}
-          initial={{ opacity: 0, scale: 0.94, x: 24 }}
-          animate={{ opacity: 1, scale: 1, x: 0 }}
-          exit={{ opacity: 0, scale: 0.94, x: 24 }}
-          transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-          className="fixed right-6 xl:right-16 top-1/2 -translate-y-1/2 z-30 hidden lg:block"
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          style={{ width: 'min(36vw, 460px)' }}
-        >
-          {activeProject.video ? (
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_8px_64px_rgba(0,0,0,0.5)] border border-white/10 bg-black">
-              <video
-                src={activeProject.video}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-auto block object-cover"
-              />
-              <div className="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-20 flex items-center justify-between">
-                <span className="text-white font-heading font-bold text-sm tracking-widest uppercase">
-                  {activeProject.title}
-                </span>
-                <span className="text-neo-green text-xs font-mono tracking-wider uppercase">
-                  {activeProject.type}
-                </span>
-              </div>
-            </div>
-          ) : activeProject.image ? (
-            <div className="relative rounded-2xl overflow-hidden shadow-[0_8px_64px_rgba(0,0,0,0.5)] border border-white/10">
-              <div className="absolute inset-0 bg-gradient-to-br from-neo-green/8 via-transparent to-transparent pointer-events-none z-10" />
-              <img
-                src={activeProject.image}
-                alt={activeProject.title}
-                className="w-full h-auto block"
-              />
-              <div className="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-20 flex items-center justify-between">
-                <span className="text-white font-heading font-bold text-sm tracking-widest uppercase">
-                  {activeProject.title}
-                </span>
-                <span className="text-neo-green text-xs font-mono tracking-wider uppercase">
-                  {activeProject.type}
-                </span>
-              </div>
-            </div>
-          ) : (
-            <div className="w-full aspect-video rounded-2xl border border-dark/15 dark:border-white/10 bg-neo-bg-light dark:bg-neo-bg flex flex-col items-center justify-center gap-3 shadow-2xl">
-              <motion.span
-                className="font-heading font-black text-5xl text-neo-green"
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                BD
-              </motion.span>
-              <span className="text-xs font-mono text-gray-500 tracking-widest uppercase">
-                {activeProject.title}
-              </span>
-            </div>
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
+/* ─── Ana bileşen ─── */
 const Projects = () => {
   const { isDarkMode } = useTheme();
-  const [hoveredId, setHoveredId] = useState(null);
-  const leaveTimer = useRef(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const playerRef = useRef(null);
 
-  const activeProject = projects.find((p) => p.id === hoveredId) || null;
-
-  /* Satırdan veya resimden fare ayrılınca kısa gecikme — bu süre içinde
-     karşı tarafa geçilirse timer iptal edilir, resim kaybolmaz */
-  const handleEnter = (id) => {
-    clearTimeout(leaveTimer.current);
-    setHoveredId(id);
-  };
-
-  const handleLeave = () => {
-    leaveTimer.current = setTimeout(() => setHoveredId(null), 80);
+  const handleCassetteClick = (project) => {
+    if (selectedProject?.id === project.id) {
+      setSelectedProject(null);
+    } else {
+      setSelectedProject(project);
+      setTimeout(() => {
+        playerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
   };
 
   return (
-    <section id="projects" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 bg-transparent relative">
-      <div className="max-w-3xl mx-auto lg:mr-auto lg:ml-12 xl:ml-20">
+    <section id="projects" className="py-20 sm:py-28 lg:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+
+      {/* Arka plan pixel art grid */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.06]" style={{
+        backgroundImage: 'linear-gradient(#8CC84B 1px, transparent 1px), linear-gradient(90deg, #8CC84B 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }} />
+
+      <div className="max-w-5xl mx-auto">
 
         {/* Başlık */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex items-center gap-3 mb-10 sm:mb-14"
+          className="flex items-center gap-3 mb-4"
         >
           <FaAsterisk className="text-base sm:text-lg animate-spin-slow text-neo-green" />
-          <span className="text-xs font-bold tracking-[0.20em] sm:tracking-[0.25em] uppercase text-gray-500 dark:text-gray-400">
+          <span className="text-xs font-bold tracking-[0.20em] sm:tracking-[0.25em] uppercase text-gray-500 dark:text-gray-400 font-mono">
             Selected Projects
           </span>
         </motion.div>
 
-        {/* Desktop: list view */}
-        <div className="hidden sm:block">
-          <div className="border-t border-dark/10 dark:border-white/10" />
-          {projects.map((project, index) => (
-            <ProjectRow
-              key={project.id}
-              project={project}
-              index={index}
-              isHovered={hoveredId === project.id}
-              onHover={() => handleEnter(project.id)}
-              onLeave={handleLeave}
-            />
-          ))}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="mb-2"
+        >
+          <p className="text-[10px] font-mono tracking-widest uppercase text-gray-400 dark:text-gray-600">
+            ↓ Bir kasete tıkla, çaları aç
+          </p>
+        </motion.div>
+
+        {/* Raf — kasetler */}
+        <div className="relative mt-10 mb-4">
+          {/* Raf tahtası */}
+          <div className="absolute bottom-0 left-0 right-0 h-2.5" style={{
+            background: isDarkMode
+              ? 'linear-gradient(to bottom, #3a2a14, #2a1e0e)'
+              : 'linear-gradient(to bottom, #c8a96e, #a07840)',
+            boxShadow: isDarkMode
+              ? '0 3px 0 #1a0e05, 0 6px 12px rgba(0,0,0,0.5)'
+              : '0 3px 0 #7a5a2a, 0 6px 12px rgba(0,0,0,0.3)',
+          }} />
+
+          {/* Kaset grid */}
+          <div className="flex flex-wrap gap-6 sm:gap-8 pb-4 px-2">
+            {projects.map((project, index) => (
+              <CassetteSVG
+                key={project.id}
+                project={project}
+                index={index}
+                isSelected={selectedProject?.id === project.id}
+                onClick={() => handleCassetteClick(project)}
+              />
+            ))}
+          </div>
         </div>
 
-        {/* Mobile: card view */}
-        <div className="sm:hidden flex flex-col gap-4">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+        {/* Raf alt dekor */}
+        <div className="h-px mb-10" style={{
+          background: isDarkMode
+            ? 'linear-gradient(to right, transparent, rgba(140,200,75,0.2), transparent)'
+            : 'linear-gradient(to right, transparent, rgba(140,200,75,0.3), transparent)',
+        }} />
+
+        {/* Kaset çalar */}
+        <div ref={playerRef}>
+          <AnimatePresence mode="wait">
+            {selectedProject && (
+              <CassettePlayer
+                key={selectedProject.id}
+                project={selectedProject}
+                onClose={() => setSelectedProject(null)}
+              />
+            )}
+          </AnimatePresence>
+
+          {!selectedProject && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center py-10"
+            >
+              <div className="text-center" style={{ fontFamily: "'Press Start 2P', monospace" }}>
+                {/* Pixel art kaset çalar boş ekran */}
+                <div className="flex items-center justify-center gap-1 mb-5">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-px bg-neo-green opacity-30" />
+                  ))}
+                </div>
+                <motion.div
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                  className="text-[8px] text-neo-green mb-2"
+                >
+                  NO CASSETTE
+                </motion.div>
+                <div className="text-[6px] text-gray-500 mb-5">INSERT TAPE TO BEGIN</div>
+                <div className="flex items-center justify-center gap-1">
+                  {[...Array(12)].map((_, i) => (
+                    <div key={i} className="w-1.5 h-px bg-neo-green opacity-30" />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
-
-      {/* Desktop: fixed görsel (sadece lg+) */}
-      <FixedImagePreview
-        activeProject={activeProject}
-        onMouseEnter={() => handleEnter(activeProject?.id)}
-        onMouseLeave={handleLeave}
-      />
     </section>
   );
 };

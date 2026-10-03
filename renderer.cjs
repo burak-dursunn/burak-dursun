@@ -4,15 +4,15 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const URL = process.argv[2] || `file:///${path.resolve(__dirname, 'index.html').replace(/\\/g, '/')}`;
-const DURATION = 10; // seconds
+const DURATION = 15; // seconds
 const FPS = 30;
 const TOTAL_FRAMES = DURATION * FPS;
 const OUTPUT_DIR = path.join(__dirname, 'output');
 const TEMP_DIR = path.join(__dirname, 'temp_frames');
 
-// easeInOutCubic easing function
-function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// linear easing function for constant speed
+function linearEase(t) {
+    return t;
 }
 
 async function run() {
@@ -46,7 +46,7 @@ async function run() {
     });
 
     const page = await browser.newPage();
-    
+
     // Hide mouse cursor and scrollbars aggressively
     await page.evaluateOnNewDocument(() => {
         const style = document.createElement('style');
@@ -78,9 +78,9 @@ async function run() {
 
     for (let frame = 0; frame < TOTAL_FRAMES; frame++) {
         const progress = frame / (TOTAL_FRAMES - 1);
-        const easedProgress = easeInOutCubic(progress);
+        const easedProgress = linearEase(progress);
         const targetScrollY = easedProgress * maxScroll;
-        
+
         // Calculate the discrete scroll delta for this frame
         const deltaY = targetScrollY - prevY;
         prevY = targetScrollY;
@@ -111,10 +111,10 @@ async function run() {
 
         const frameNum = String(frame).padStart(4, '0');
         const framePath = path.join(TEMP_DIR, `frame_${frameNum}.png`);
-        
+
         // Capture frame
         await page.screenshot({ path: framePath, type: 'png' });
-        
+
         if (frame % 30 === 0) {
             console.log(`Captured frame ${frame}/${TOTAL_FRAMES}`);
         }
@@ -124,11 +124,11 @@ async function run() {
     await browser.close();
 
     console.log('Starting FFmpeg compilation...');
-    
+
     // Combine with FFmpeg
     // Requirements: H.264, CRF 23, 3 Mbps bitrate, yuv420p, 30 FPS, 1280x720
     const ffmpegArgs = [
-        '-y', 
+        '-y',
         '-framerate', '30',
         '-i', path.join(TEMP_DIR, 'frame_%04d.png'),
         '-c:v', 'libx264',
@@ -152,13 +152,13 @@ async function run() {
     ffmpeg.on('close', (code) => {
         if (code === 0) {
             console.log('Video generated successfully: /output/demo2.mp4');
-            
+
             console.log('Cleaning up temporary PNG files...');
             for (const file of fs.readdirSync(TEMP_DIR)) {
                 fs.unlinkSync(path.join(TEMP_DIR, file));
             }
             fs.rmdirSync(TEMP_DIR);
-            
+
             console.log('Done.');
         } else {
             console.error(`FFmpeg exited with code ${code}`);
