@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { FiGithub, FiExternalLink, FiX, FiPlay } from 'react-icons/fi';
 import { FaAsterisk } from 'react-icons/fa';
-import { useTheme } from '../context/ThemeContext';
 
 import pemaHomeImg from '../assets/proje-görselleri/pema-home1.webp';
 import bilgecanImg from '../assets/proje-görselleri/Bilgecan.webp';
@@ -45,7 +44,7 @@ const projects = [
     image: inboxImg,
     video: inboxVideo,
     github: "https://github.com/burak-dursunn/inbox-coffee",
-    live: "https://inbox-coffe.vercel.app/",
+    live: "https://inboxotomat.com",
     color: CASSETTE_COLORS[1],
   },
   {
@@ -56,7 +55,7 @@ const projects = [
     image: erganiImg,
     video: erganiVideo,
     github: "https://github.com/burak-dursunn/yildiz-spor",
-    live: "https://ergani-y-ld-z-spor-kulubu.vercel.app/",
+    live: "https://erganiyildizspor.com",
     color: CASSETTE_COLORS[2],
   },
   {
@@ -95,7 +94,7 @@ const projects = [
 ];
 
 /* ─── Pixel art SVG kaset ─── */
-const CassetteSVG = ({ project, isSelected, onClick, index }) => {
+const CassetteSVG = ({ project, isSelected, index }) => {
   const c = project.color;
   const reelAnim = useAnimation();
 
@@ -110,15 +109,12 @@ const CassetteSVG = ({ project, isSelected, onClick, index }) => {
 
   return (
     <motion.div
-      onClick={onClick}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      whileHover={{ y: -12, scale: 1.04 }}
-      whileTap={{ scale: 0.96 }}
-      className="relative cursor-pointer select-none"
-      style={{ imageRendering: 'pixelated' }}
+      className="project-list-cassette-art absolute left-0 top-0 select-none"
+      style={{ imageRendering: 'pixelated', transform: 'scale(.52)', transformOrigin: 'top left' }}
     >
       {/* Kaset gövdesi */}
       <div
