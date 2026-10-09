@@ -132,22 +132,3 @@ section + section {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
-
-/* Pixel art cassette scan-line effect */
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-.pixel-scanline {
-  animation: scanline 6s linear infinite;
-}
-
-/* Cassette reel spin */
-@keyframes reel-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.cassette-reel {
-  animation: reel-spin 1.8s linear infinite;
-  transform-origin: center;
-}
